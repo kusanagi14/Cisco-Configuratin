@@ -1,0 +1,136 @@
+RRIP1#sh run
+Building configuration...
+
+Current configuration : 1018 bytes
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname RRIP1
+!
+!
+!
+!
+!
+!
+!
+!
+no ip cef
+no ipv6 cef
+!
+!
+!
+!
+license udi pid CISCO1941/K9 sn FTX15244G66-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ ip address 10.10.10.1 255.255.255.0
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/1
+ ip address 11.11.11.1 255.255.255.0
+ duplex auto
+ speed auto
+!
+interface Serial0/0/0
+ ip address 100.100.100.1 255.255.255.0
+ clock rate 64000
+!
+interface Serial0/0/1
+ ip address 102.102.102.2 255.255.255.0
+!
+interface Serial0/1/0
+ no ip address
+ clock rate 2000000
+ shutdown
+!
+interface Serial0/1/1
+ no ip address
+ clock rate 2000000
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router rip
+ version 1
+ network 10.0.0.0
+ network 11.0.0.0
+ network 100.0.0.0
+ network 102.0.0.0
+!
+ip classless
+!
+ip flow-export version 9
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+!
+!
+end
+
+RRIP1#sh ip route 
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+     10.0.0.0/8 is variably subnetted, 2 subnets, 2 masks
+C       10.10.10.0/24 is directly connected, GigabitEthernet0/0
+L       10.10.10.1/32 is directly connected, GigabitEthernet0/0
+     11.0.0.0/8 is variably subnetted, 2 subnets, 2 masks
+C       11.11.11.0/24 is directly connected, GigabitEthernet0/1
+L       11.11.11.1/32 is directly connected, GigabitEthernet0/1
+R    12.0.0.0/8 [120/1] via 102.102.102.1, 00:00:26, Serial0/0/1
+     100.0.0.0/8 is variably subnetted, 2 subnets, 2 masks
+C       100.100.100.0/24 is directly connected, Serial0/0/0
+L       100.100.100.1/32 is directly connected, Serial0/0/0
+R    101.0.0.0/8 [120/1] via 100.100.100.2, 00:00:04, Serial0/0/0
+                 [120/1] via 102.102.102.1, 00:00:26, Serial0/0/1
+     102.0.0.0/8 is variably subnetted, 3 subnets, 2 masks
+R       102.0.0.0/24 [120/2] via 100.100.100.2, 00:02:10, Serial0/0/0
+C       102.102.102.0/24 is directly connected, Serial0/0/1
+L       102.102.102.2/32 is directly connected, Serial0/0/1
+R    128.128.0.0/16 [120/1] via 100.100.100.2, 00:00:04, Serial0/0/0
+R    129.129.0.0/16 [120/1] via 100.100.100.2, 00:00:04, Serial0/0/0
+R    130.130.0.0/16 [120/1] via 102.102.102.1, 00:00:26, Serial0/0/1
+
+RRIP1#
